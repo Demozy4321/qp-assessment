@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,15 +16,20 @@ import lombok.NoArgsConstructor;
 public class UserTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    @Column(name = "User_Email")
+    private String email;
 
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Email")
-    private String email;
+    @Column(name = "Username")
+    private String username;
 
-    @Column(name = "Age")
-    private Integer age;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "User_Email"),
+            inverseJoinColumns = @JoinColumn(name = "Role_Id")
+    )
+    private Set<Roles> roles = new HashSet<>();
 }

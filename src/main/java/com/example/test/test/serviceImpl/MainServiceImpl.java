@@ -1,6 +1,9 @@
 package com.example.test.test.serviceImpl;
 
+import com.example.test.test.DTOs.ResponseDto;
+import com.example.test.test.entity.GroceryItem;
 import com.example.test.test.entity.UserTable;
+import com.example.test.test.repositories.GroceryRepo;
 import com.example.test.test.repositories.UserRepo;
 import com.example.test.test.service.MainService;
 import jakarta.persistence.EntityManager;
@@ -33,10 +36,13 @@ public class MainServiceImpl implements MainService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private GroceryRepo groceryRepo;
+
+
     @Override
     public void addUser() {
         UserTable userTable = new UserTable();
-        userTable.setAge(21);
         userTable.setName("Demozy");
         userTable.setEmail("demozy@gmail.com");
 
@@ -58,5 +64,27 @@ public class MainServiceImpl implements MainService {
 
         return userTables;
 
+    }
+
+    @Override
+    public ResponseDto viewGroceryItems() {
+        ResponseDto responseDto = new ResponseDto();
+
+        try {
+
+            List<GroceryItem> groceryItems = groceryRepo.findAll();
+
+            responseDto.setData(groceryItems);
+            responseDto.setStatus(true);
+            responseDto.setMessage("Grocery Item Fetched Successfully");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            responseDto.setData(new ArrayList<>());
+            responseDto.setStatus(false);
+            responseDto.setMessage("Exception Occured in Fetching Items");
+        }finally {
+            return responseDto;
+        }
     }
 }

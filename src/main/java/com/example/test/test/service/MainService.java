@@ -1,5 +1,6 @@
 package com.example.test.test.service;
 
+import com.example.test.test.DTOs.ResponseDto;
 import com.example.test.test.entity.UserTable;
 import org.springframework.stereotype.Component;
 
@@ -10,4 +11,6 @@ public interface MainService {
     void addUser();
 
     List<UserTable> findUser();
+
+    ResponseDto viewGroceryItems();
 }
